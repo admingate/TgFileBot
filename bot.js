@@ -50,28 +50,28 @@ bot.on('document', async (msg) => {
         const file_size = msg.document.file_size;
         let received_bytes = 0;
 
-		// Save the document (You can modify this logic for your specific use case)
-		const filePath = path.join(__dirname, 'downloads', `${msg.document.file_name}`);
-		const fileWriter = fs.createWriteStream(filePath);
+	// Save the document (You can modify this logic for your specific use case)
+	const filePath = path.join(__dirname, 'downloads', `${msg.document.file_name}`);
+	const fileWriter = fs.createWriteStream(filePath);
 
-		response.body.on('data', (chunk) => {
-			received_bytes += chunk.length;
-			const progress = (received_bytes / file_size) * 100;
+	response.body.on('data', (chunk) => {
+		received_bytes += chunk.length;
+		const progress = (received_bytes / file_size) * 100;
 
-			// Simulate progress bar
-			const progressBar = getProgressBar(progress);
-			const message = `File download progress:\n${progressBar}`;
+		// Simulate progress bar
+		const progressBar = getProgressBar(progress);
+		const message = `File download progress:\n${progressBar}`;
 
-			bot.sendMessage(chatId, message);
-		});
+		bot.sendMessage(chatId, message);
+	});
 
-		response.body.pipe(fileWriter);
+	response.body.pipe(fileWriter);
 
-		bot.sendMessage(chatId, `File saved successfully. Processing is in progress.`);
+	bot.sendMessage(chatId, `File saved successfully. Processing is in progress.`);
 
     } catch (err) {
 		
-		logError(err);
-		bot.sendMessage(chatId, 'Failed to save the file. Please try again later.');
-}
+	logError(err);
+	bot.sendMessage(chatId, 'Failed to save the file. Please try again later.');
+    }
 });
